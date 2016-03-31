@@ -416,9 +416,10 @@ function openerp70(values, element){
 	// Select From List 9.0
 	if(jQuery(element).context.tagName.toLowerCase() == 'option'
             && jQuery(element).parents('select').length){
-      name = jQuery(element).attr('value');
+      value = jQuery(element).attr('value');
+      name = jQuery(element).attr('name');
       model = jQuery(element).closest('select').attr('id');
-      values[builder.locator.methods.openerp70] = ["SelectFromList\t" + model + "\t" + name];
+      values[builder.locator.methods.openerp70] = ["Select-Option\t" + model + "\t" + name + "\t" + value];
       return builder.locator.methods.openerp70;
 	}
 
