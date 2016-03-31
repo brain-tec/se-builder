@@ -412,6 +412,8 @@ function openerp70(values, element){
 		values[builder.locator.methods.openerp70] = ["Text    " + model + "    " + name];
 		return builder.locator.methods.openerp70;
 	}
+
+	/*
 	// Select From List 9.0
 	if(jQuery(element).context.tagName.toLowerCase() == 'option'
             && jQuery(element).parents('select').length){
@@ -427,7 +429,7 @@ function openerp70(values, element){
       model = jQuery(element).closest('select').attr('id');
       values[builder.locator.methods.openerp70] = ["SelectFromList\t" + model + "\t" + name];
       return builder.locator.methods.openerp70;
-	}
+	}*/
 
 	// One2ManySelectRecord (must be before ListView)
 	if(jQuery(element).context.tagName.toLowerCase() == 'td'
