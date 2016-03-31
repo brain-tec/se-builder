@@ -417,7 +417,7 @@ function openerp70(values, element){
 	if(jQuery(element).context.tagName.toLowerCase() == 'option'
             && jQuery(element).parents('select').length){
       value = jQuery(element).attr('value');
-      name = jQuery(element).attr('name');
+      name = jQuery(element).closest('select').attr('name');
       model = jQuery(element).closest('select').attr('id');
       values[builder.locator.methods.openerp70] = ["Select-Option\t" + model + "\t" + name + "\t" + value];
       return builder.locator.methods.openerp70;
