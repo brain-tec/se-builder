@@ -413,23 +413,14 @@ function openerp70(values, element){
 		return builder.locator.methods.openerp70;
 	}
 
-	/*
 	// Select From List 9.0
 	if(jQuery(element).context.tagName.toLowerCase() == 'option'
             && jQuery(element).parents('select').length){
       name = jQuery(element).attr('value');
       model = jQuery(element).closest('select').attr('id');
-      values[builder.locator.methods.openerp70] = ["OptionFromList\t" + model + "\t" + name];
-      return builder.locator.methods.openerp70;
-	}
-	
-	// Select From List 9.0
-	if(jQuery(element).context.tagName.toLowerCase() == 'select'){
-      name = jQuery(element).children('option:selected').attr('value');
-      model = jQuery(element).closest('select').attr('id');
       values[builder.locator.methods.openerp70] = ["SelectFromList\t" + model + "\t" + name];
       return builder.locator.methods.openerp70;
-	}*/
+	}
 
 	// One2ManySelectRecord (must be before ListView)
 	if(jQuery(element).context.tagName.toLowerCase() == 'td'
