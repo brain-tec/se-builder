@@ -443,7 +443,25 @@ function openerp70(values, element){
       return builder.locator.methods.openerp70;
 	}
 
-	// Select ListView
+	// TODO: Select ListView 9.0
+	if(jQuery(element).context.tagName.toLowerCase() == 'td'
+            && jQuery(element).parents('table.o_list_view').length){
+
+      model = jQuery(element).attr('data-bt-testing-model_name');
+      var recordValue = '';
+
+      // TODO: has child with attribute data-field
+      jQuery.each(jQuery(element).closest('tr').find('td[data-field]'), function(index, value){
+        console.log("#" + jQuery(value).text() + "#");
+        if(jQuery(value).text().trim()) {
+          recordValue += "\t" + jQuery(value).attr('data-field') + '=' + jQuery(value).text().replace(/\\n/g, "\\\\n").replace(/\r?\n/g, "\\n")
+        }
+      });
+      values[builder.locator.methods.openerp70] = ["SelectListView\t" + model + "\t" + recordValue];
+      return builder.locator.methods.openerp70;
+	}
+
+	// Select ListView 8.0
 	if(jQuery(element).context.tagName.toLowerCase() == 'td'
             && jQuery(element).hasClass('oe_list_field_cell')
             && jQuery(element).parents('table.oe_list_content').length){
