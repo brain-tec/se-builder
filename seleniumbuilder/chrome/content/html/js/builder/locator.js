@@ -302,7 +302,15 @@ function openerp70(values, element){
 		return builder.locator.methods.openerp70;
 	}
 	
-	// NotebookPage
+	// NotebookPage 9.0
+	if(jQuery(element).context.tagName.toLowerCase() == 'a'
+		&& jQuery(element).attr('role')=='tab'){
+		value = jQuery(element).attr('data-bt-testing-original-string');
+		values[builder.locator.methods.openerp70] = ["NotebookPage    " + value];
+		return builder.locator.methods.openerp70;
+	}
+	
+	// NotebookPage 8.0
 	if(jQuery(element).context.tagName.toLowerCase() == 'a'
 		&& jQuery(element).hasClass('ui-tabs-anchor')){
 		value = jQuery(element).attr('data-bt-testing-original-string');
@@ -412,6 +420,16 @@ function openerp70(values, element){
 		return builder.locator.methods.openerp70;
 	}
 
+	// Select From List 9.0
+	if(jQuery(element).context.tagName.toLowerCase() == 'option'
+            && jQuery(element).parents('select').length){
+      value = jQuery(element).attr('value');
+      name = jQuery(element).closest('select').attr('name');
+      model = jQuery(element).closest('select').attr('id');
+      values[builder.locator.methods.openerp70] = ["Select-Option\t" + model + "\t" + name + "\t" + value];
+      return builder.locator.methods.openerp70;
+	}
+
 	// One2ManySelectRecord (must be before ListView)
 	if(jQuery(element).context.tagName.toLowerCase() == 'td'
             && jQuery(element).parents('div.oe_form_field_one2many').length
@@ -432,7 +450,25 @@ function openerp70(values, element){
       return builder.locator.methods.openerp70;
 	}
 
-	// Select ListView
+	// TODO: Select ListView 9.0
+	if(jQuery(element).context.tagName.toLowerCase() == 'td'
+            && jQuery(element).parents('table.o_list_view').length){
+
+      model = jQuery(element).attr('data-bt-testing-model_name');
+      var recordValue = '';
+
+      // TODO: has child with attribute data-field
+      jQuery.each(jQuery(element).closest('tr').find('td[data-field]'), function(index, value){
+        console.log("#" + jQuery(value).text() + "#");
+        if(jQuery(value).text().trim()) {
+          recordValue += "\t" + jQuery(value).attr('data-field') + '=' + jQuery(value).text().replace(/\\n/g, "\\\\n").replace(/\r?\n/g, "\\n")
+        }
+      });
+      values[builder.locator.methods.openerp70] = ["SelectListView\t" + model + "\t" + recordValue];
+      return builder.locator.methods.openerp70;
+	}
+
+	// Select ListView 8.0
 	if(jQuery(element).context.tagName.toLowerCase() == 'td'
             && jQuery(element).hasClass('oe_list_field_cell')
             && jQuery(element).parents('table.oe_list_content').length){
@@ -458,6 +494,8 @@ function openerp70(values, element){
 
 
 	values[builder.locator.methods.openerp70] = ["No match: "+jQuery(element).context.tagName+'#'+jQuery(element).parents()+'='+jQuery(element).text()];
+	if(builder.locator.methods.openerp70.indexOf("No match: TD#")>-1)
+		return
 	return builder.locator.methods.openerp70;
 }
 
