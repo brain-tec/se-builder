@@ -302,10 +302,18 @@ function openerp70(values, element){
 		return builder.locator.methods.openerp70;
 	}
 	
-	// NotebookPage
+	// NotebookPage 9.0
 	if(jQuery(element).context.tagName.toLowerCase() == 'a'
 		&& jQuery(element).attr('role')=='tab'){
 		//hasClass('ui-tabs-anchor')){
+		value = jQuery(element).attr('data-bt-testing-original-string');
+		values[builder.locator.methods.openerp70] = ["NotebookPage    " + value];
+		return builder.locator.methods.openerp70;
+	}
+	
+	// NotebookPage 8.0
+	if(jQuery(element).context.tagName.toLowerCase() == 'a'
+		&& jQuery(element).hasClass('ui-tabs-anchor')){
 		value = jQuery(element).attr('data-bt-testing-original-string');
 		values[builder.locator.methods.openerp70] = ["NotebookPage    " + value];
 		return builder.locator.methods.openerp70;
