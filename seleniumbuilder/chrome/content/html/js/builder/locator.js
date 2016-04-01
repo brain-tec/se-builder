@@ -428,6 +428,14 @@ function openerp70(values, element){
 		values[builder.locator.methods.openerp70] = ["ChangeView    " + value];
 		return builder.locator.methods.openerp70;
 	}
+	
+	// NotebookPage 9.0
+	if(jQuery(element).context.tagName.toLowerCase() == 'a'
+		&& jQuery(element).attr('role')=='tab'){
+		value = jQuery(element).attr('data-bt-testing-original-string');
+		values[builder.locator.methods.openerp70] = ["NotebookPage    " + value];
+		return builder.locator.methods.openerp70;
+	}
 
 	// NotebookPage 8.0
 	if(jQuery(element).context.tagName.toLowerCase() == 'a'
@@ -565,6 +573,16 @@ function openerp70(values, element){
 		values[builder.locator.methods.openerp70] = [keyword + "\t" + model + "\t" + name];
 		return builder.locator.methods.openerp70;
 	}
+	
+	// Select From List 9.0 "Temporal"
+	if(jQuery(element).context.tagName.toLowerCase() == 'option'
+            && jQuery(element).parents('select').length){
+      value = jQuery(element).attr('value');
+      name = jQuery(element).closest('select').attr('name');
+      model = jQuery(element).closest('select').attr('id');
+      values[builder.locator.methods.openerp70] = ["Select-Option\t" + model + "\t" + name + "\t" + value];
+      return builder.locator.methods.openerp70;
+	}
 
 	// One2ManySelectRecord (must be before ListView)
 	if(jQuery(element).context.tagName.toLowerCase() == 'td'
@@ -630,6 +648,8 @@ function openerp70(values, element){
 
 
 	values[builder.locator.methods.openerp70] = ["No match: "+jQuery(element).context.tagName+'#'+jQuery(element).parents()+'='+jQuery(element).text()];
+	if(builder.locator.methods.openerp70.indexOf("No match: TD#")>-1)
+		return
 	return builder.locator.methods.openerp70;
 }
 
