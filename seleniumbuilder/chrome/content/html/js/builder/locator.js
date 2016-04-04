@@ -332,7 +332,7 @@ function openerp70(values, element){
 		return builder.locator.methods.openerp70;
 	}
 
-  // Open SidebarAction 9.0 EE
+ /* // Open SidebarAction 9.0 EE
 	if(jQuery(element).context.tagName.toLowerCase() == 'a'
           && jQuery(element).hasClass('dropdown-toggle')
           && jQuery(element).parents('div.o_cp_sidebar').length) {
@@ -358,7 +358,18 @@ function openerp70(values, element){
         values[builder.locator.methods.openerp70] = ["SidebarAction\t" + type + "\t" + id];
       }
       return builder.locator.methods.openerp70;
-    }
+    }*/
+	
+	// SidebarAction 9.0
+	if(jQuery(element).parents('ul').length
+		&& jQuery(element).parents().parents('div.o_cp_sidebar').length) {
+
+	  var type = jQuery(element).closest('div.o_dropdown').attr('data-bt-type');
+	  var index = jQuery(element).attr('data-index');
+		  //values[builder.locator.methods.openerp70] = ["SidebarAction\t" + index]
+	  values[builder.locator.methods.openerp70] = ["SidebarAction\t" + type + "\t" + index];
+	  return builder.locator.methods.openerp70;
+	}
 
   // The blue arrow on the right side of a many2one
   // Many2One-External 9.0 EE (element==button, so must before button)
