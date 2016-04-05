@@ -353,6 +353,10 @@ function openerp70(values, element){
           && jQuery(element).parents('div.o_cp_sidebar').length) {
       var type = jQuery(element).attr('data-bt-type');
       var id = jQuery(element).attr('data-bt-id');
+      if(id === ''){
+        type = jQuery(element).closest('div.o_dropdown').attr('data-bt-type');
+        id = jQuery(element).attr('data-index');
+      }
       // if values, otherwise print empty line
       if(type && id) {
         values[builder.locator.methods.openerp70] = ["SidebarAction\t" + type + "\t" + id];
@@ -566,6 +570,16 @@ function openerp70(values, element){
 		return builder.locator.methods.openerp70;
 	}
 
+  // Select From List 9.0 "Temporal"
+  if(jQuery(element).context.tagName.toLowerCase() == 'option'
+    && jQuery(element).parents('select').length){
+    value = jQuery(element).attr('value');
+    name = jQuery(element).closest('select').attr('data-bt-testing-name');
+    model = jQuery(element).closest('select').attr('data-bt-testing-model_name');
+    values[builder.locator.methods.openerp70] = ["Select-Option\t" + model + "\t" + name + "\t" + value];
+    return builder.locator.methods.openerp70;
+  }
+
 	// One2ManySelectRecord (must be before ListView)
 	if(jQuery(element).context.tagName.toLowerCase() == 'td'
             && jQuery(element).parents('div.oe_form_field_one2many').length
@@ -630,6 +644,8 @@ function openerp70(values, element){
 
 
 	values[builder.locator.methods.openerp70] = ["No match: "+jQuery(element).context.tagName+'#'+jQuery(element).parents()+'='+jQuery(element).text()];
+	if(builder.locator.methods.openerp70.indexOf("No match: TD#")>-1)
+		return
 	return builder.locator.methods.openerp70;
 }
 
