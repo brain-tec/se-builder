@@ -353,7 +353,7 @@ function openerp70(values, element){
           && jQuery(element).parents('div.o_cp_sidebar').length) {
       var type = jQuery(element).attr('data-bt-type');
       var id = jQuery(element).attr('data-bt-id');
-      if(id === ''){
+      if(!id){
         type = jQuery(element).closest('div.o_dropdown').attr('data-bt-type');
         id = jQuery(element).attr('data-index');
       }
