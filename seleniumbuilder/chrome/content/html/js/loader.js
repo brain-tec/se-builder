@@ -1,5 +1,5 @@
 var builder = {};
-builder.version = "2.3.3";
+builder.version = "2.3.5";
 
 builder.loader = {};
 
@@ -203,6 +203,8 @@ builder.loader.mainScripts = [
   "builder/selenium2/io/formats/phpunitwebdriver_facebook.js",
   "builder/selenium2/io/formats/php.js",
   "builder/selenium2/io/formats/node-wd.js",
+  "builder/selenium2/io/formats/node-wd-promises.js",
+  "builder/selenium2/io/formats/node-selenium-webdriver.js",
   "builder/selenium2/io/formats/node-mocha.js",
   "builder/selenium2/io/formats/node-protractor.js",
   "builder/selenium2/io/formats/csharp_new.js",

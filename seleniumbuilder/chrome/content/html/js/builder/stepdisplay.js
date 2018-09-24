@@ -118,7 +118,7 @@ builder.stepdisplay.update = function() {
   for (var i = 0; i < script.steps.length; i++) {
     addStep(script.steps[i]);
   }
-  script.saveRequired = saveRequired;
+  builder.suite.setScriptSaveRequired(script, saveRequired);
 };
 
 builder.stepdisplay.updateStep = function(stepID) {

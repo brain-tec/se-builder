@@ -101,7 +101,11 @@ builder.suite.getScriptNames = function() {
     var script = builder.suite.scripts[i];
     var name = "[" + _t('untitled_script') + " " + (i + 1) + "]";
     if (script.path) {
-      name = script.path.path.split("/");
+      if (script.path.path.indexOf("/") != - 1) {
+        name = script.path.path.split("/");
+      } else {
+        name = script.path.path.split("\\"); // Maybe it's a windows path?
+      }
       name = name[name.length - 1].split(".")[0];
     }
     if (script.exportpath) {

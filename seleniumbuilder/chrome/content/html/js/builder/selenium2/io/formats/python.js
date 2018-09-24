@@ -4,6 +4,7 @@ builder.selenium2.io.addLangFormatter({
   not: "not ",
   start:
     "# -*- coding: utf-8 -*-\n" +
+    "from __future__ import unicode_literals\n" +
     "from selenium.webdriver.firefox.webdriver import WebDriver\n" +
     "from selenium.webdriver.common.action_chains import ActionChains\n" +
     "import time\n" +
