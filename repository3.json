@@ -1,0 +1,75 @@
+{
+  "repositoryVersion": 1,
+  "description": "List of known Selenium Builder 3 plugins.",
+  "plugins": [
+    {
+      "identifier": "github_integration",
+      "name": "GitHub Integration",
+      "description": "Store your tests on GitHub.",
+      "description_de": "Speichere deine Testskripts auf GitHub.",
+      "siteUrl": "http://zarkonnen.github.com/sb-github-integration/",
+      "screenshot": "http://raw.github.com/Zarkonnen/sb-github-integration/master/screenshot.png",
+      "icon": "http://raw.github.com/Zarkonnen/sb-github-integration/master/github_integration/icon.png",
+      "license":"Copyright 2016 David Stark\n\nLicensed under the Apache License, Version 2.0 (the \"License\"); you may not use this file except in compliance with the License.\n\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.",
+      "browsers": {
+        "firefox": {
+          "pluginVersion": "1.5",
+          "builderMinVersion": "3.0",
+          "builderMaxVersion": "3.*",
+          "downloadUrl": "http://zarkonnen.github.com/sb-github-integration/github_integration_b3_1_5.zip"
+        }
+      }
+    },
+    {
+      "identifier": "sauce",
+      "name": "Sauce for Selenium Builder 3",
+      "description": "Enables export and playback on Sauce OnDemand.",
+      "description_de": "Ermöglicht Export für und Abspielen auf Sauce OnDemand",
+      "siteUrl": "http://saucelabs.github.com/sb-sauce-plugin/",
+      "screenshot": "http://saucelabs.github.com/sb-sauce-plugin/img/screenshot.png",
+      "icon": "http://saucelabs.github.com/sb-sauce-plugin/img/icon.png",
+      "license":"Copyright 2015 Sauce Labs\n\nLicensed under the Apache License, Version 2.0 (the \"License\"); you may not use this file except in compliance with the License.\n\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.",
+      "browsers": {
+        "firefox": {
+          "pluginVersion": "1.0.4",
+          "builderMinVersion": "3.0",
+          "builderMaxVersion": "3.1.*",
+          "downloadUrl": "http://saucelabs.github.com/sb-sauce-plugin/sauce-sb3-1-0-4.zip"
+        }
+      }
+    },
+    {
+      "identifier": "crossbrowsertesting",
+      "name": "CrossBrowserTesting.com for Selenium Builder 3",
+      "description": "Enables export and playback on CrossBrowserTesting.com.",
+      "siteUrl": "http://crossbrowsertesting.com/faq/how-do-i-record-and-run-selenium-tests-selenium-builder",
+      "screenshot": "http://crossbrowsertesting.com/sebuilder_screenshot.png",
+      "icon": "https://github.com/crossbrowsertesting/SeBuilder-Plugin/raw/master/crossbrowsertesting/icon.png",
+      "browsers": {
+        "firefox": {
+          "pluginVersion": "1.7.1",
+          "builderMinVersion": "3.0.6",
+          "builderMaxVersion": "3.*.*",
+          "downloadUrl": "https://github.com/crossbrowsertesting/SeBuilder-Plugin/raw/master/crossbrowsertesting-builder.zip"
+        }
+      }
+    },
+    {
+      "identifier": "testingbot",
+      "name": "TestingBot for Selenium Builder 3",
+      "description": "Enables export and playback on TestingBot.",
+      "siteUrl": "http://testingbot.com/support/other/se-builder",
+      "screenshot": "https://testingbot.com/assets/builder/sebuilder.jpg",
+      "icon": "http://testingbot.com/assets/builder/icon.png",
+      "browsers": {
+        "firefox": {
+          "pluginVersion": "1.0.0",
+          "builderMinVersion": "3.0",
+          "builderMaxVersion": "3.*",
+          "downloadUrl": "http://testingbot.com/testingbot-builder-v3.zip"
+        }
+      }
+    }
+  ]
+}
+

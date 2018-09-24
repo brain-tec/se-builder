@@ -52,7 +52,6 @@
 
     <div id="splash">
       <p>You can manage your plugins directly from within Selenium Builder. If you want to develop a plugin, <a href="https://github.com/sebuilder/se-builder/wiki/Plugin-Developer-Documentation">have a look at the developer documentation</a>.</p>
-      <p>Selenium Builder also supports adding basic new steps via a <a href="http://seleniumhq.org/docs/08_user_extensions.html">user_extensions.js file</a>. To install the file, put it in <pre>&lt;your firefox profile folder&gt;/SeBuilder/user-extensions.js</pre> (Note that this only supports extensions that add steps, not ones that add new user interface such as flow-control.)</p>
     </div>
 
     <div id="content">
@@ -70,11 +69,11 @@
         <ul class="footer-links">
           <li><a href="http://www.youtube.com/watch?v=RdAd4QfAT8w">Hacking Video</a></li>
           <li><a href="https://groups.google.com/d/forum/se-builder">Mailing List</a></li>
-          <li><a href="http://github.com/sebuilder/se-builder">Github</a></li>
+          <li><a href="https://github.com/SeleniumBuilder/selenium-builder">Github</a></li>
           <li><a href="https://github.com/sebuilder/se-builder/wiki">Docs</a></li>
           <li><a href="plugins.html">Plugins</a></li>
         </ul>
-        <p style="color:rgb(153, 153, 153);">Powered by <a href="https://saucelabs.com/se-builder">Sauce Labs</a> and robots.</p>
+        <p style="color:rgb(153, 153, 153);">Powered by <a href="https://saucelabs.com/builder">Sauce Labs</a> and robots.</p>
       </div>
     </footer>
 
@@ -170,7 +169,7 @@
         type: "GET",
         cache: false,
         dataType: "json",
-        url: "repository.json",
+        url: "repository3.json",
         success: function(data) {
           jQuery('#plugins-loading').hide();
           for (var i = 0; i < data.plugins.length; i++) {

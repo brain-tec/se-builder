@@ -293,6 +293,84 @@
             </em:targetApplication>
           </RDF:Description>
           
+          <RDF:Description>
+            <em:version>2.3.1</em:version>
+
+            <em:targetApplication>
+              <RDF:Description>
+                <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+                <em:minVersion>3.6</em:minVersion>
+                <em:maxVersion>35.*</em:maxVersion>
+
+                <!-- TODO: 2.3 XPI download -->
+                <em:updateLink>https://saucelabs.com/addons/selenium-builder-2.3.1.xpi</em:updateLink>
+
+                <!-- TODO: HTML list of 2.3 updates -->
+                <em:updateInfoURL>https://saucelabs.com/addons/selenium-builder-2.3.1.html</em:updateInfoURL>
+              </RDF:Description>
+            </em:targetApplication>
+          </RDF:Description>
+          
+          <RDF:Description>
+            <em:version>2.3.2</em:version>
+
+            <em:targetApplication>
+              <RDF:Description>
+                <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+                <em:minVersion>3.6</em:minVersion>
+                <em:maxVersion>37.*</em:maxVersion>
+
+                <!-- TODO: 2.3 XPI download -->
+                <em:updateLink>https://seleniumbuilder.github.io/se-builder/selenium-builder-2.3.2.xpi</em:updateLink>
+
+                <!-- TODO: HTML list of 2.3 updates -->
+                <em:updateInfoURL>https://seleniumbuilder.github.io/se-builder/selenium-builder-2.3.2.html</em:updateInfoURL>
+              </RDF:Description>
+            </em:targetApplication>
+          </RDF:Description>
+          
+          <RDF:Description>
+            <em:version>2.3.3</em:version>
+
+            <em:targetApplication>
+              <RDF:Description>
+                <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+                <em:minVersion>3.6</em:minVersion>
+                <em:maxVersion>38.*</em:maxVersion>
+                <em:updateLink>https://seleniumbuilder.github.io/se-builder/selenium-builder-2.3.3.xpi</em:updateLink>
+                <em:updateInfoURL>https://seleniumbuilder.github.io/se-builder/selenium-builder-2.3.3.html</em:updateInfoURL>
+              </RDF:Description>
+            </em:targetApplication>
+          </RDF:Description>
+          
+          <RDF:Description>
+            <em:version>2.3.4</em:version>
+
+            <em:targetApplication>
+              <RDF:Description>
+                <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+                <em:minVersion>3.6</em:minVersion>
+                <em:maxVersion>38.*</em:maxVersion>
+                <em:updateLink>https://seleniumbuilder.github.io/se-builder/selenium-builder-2.3.4.xpi</em:updateLink>
+                <em:updateInfoURL>https://seleniumbuilder.github.io/se-builder/selenium-builder-2.3.4.html</em:updateInfoURL>
+              </RDF:Description>
+            </em:targetApplication>
+          </RDF:Description>
+          
+          <RDF:Description>
+            <em:version>2.3.5</em:version>
+
+            <em:targetApplication>
+              <RDF:Description>
+                <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+                <em:minVersion>3.6</em:minVersion>
+                <em:maxVersion>39.*</em:maxVersion>
+                <em:updateLink>https://seleniumbuilder.github.io/se-builder/selenium-builder-2.3.5.xpi</em:updateLink>
+                <em:updateInfoURL>https://seleniumbuilder.github.io/se-builder/selenium-builder-2.3.5.html</em:updateInfoURL>
+              </RDF:Description>
+            </em:targetApplication>
+          </RDF:Description>
+          
         </RDF:li>
 
       </RDF:Seq>
