@@ -249,6 +249,44 @@ div a:last-child
   background: rgb(128,128,128);
 }
 
+.menu-reorder {
+  display: block;
+  width: 20px;
+  height: 14px;
+  float: left;
+  position: relative;
+}
+
+.menu-up {
+  display: block;
+  width: 11px;
+  height: 9px;
+  background: url('../img/up.png');
+  cursor: pointer;
+  position: relative;
+  top: 2px;
+  left: 3px;
+}
+
+.menu-up:hover {
+  background: url('../img/up_hover.png');
+}
+
+.menu-down {
+  display: block;
+  width: 11px;
+  height: 9px;
+  background: url('../img/down.png');
+  cursor: pointer;
+  position: relative;
+  top: 5px;
+  left: 3px;
+}
+
+.menu-down:hover {
+  background: url('../img/down_hover.png');
+}
+
 /** Windows and dialogs */
 #steplist, #startup, #plugins {
   counter-reset: line-number;
@@ -480,6 +518,11 @@ texta {
   width: 5px;
   height: 5px;
   cursor: pointer;
+}
+
+.b-step-breakpoint:hover {
+  background: #ffbbbb;
+  border: 1px solid #ff9999;
 }
 
 .b-step-breakpoint-disabled {

@@ -11,7 +11,7 @@ builder.selenium2.Recorder = function(top_window, recordStep, getLastRecordedSte
   this.top_window = top_window;
   this.recordStep = recordStep;
   this.getLastRecordedStep = getLastRecordedStep;
-
+  
   // These three variables are used to notice when the same event gets issued twice in a row.
   /** The last locator clicked on. */
   this.lastLocator = false;
@@ -23,7 +23,7 @@ builder.selenium2.Recorder = function(top_window, recordStep, getLastRecordedSte
   this.bound = [];
   /** Listener functions attached to frames. Stored so they can be detached again. */
   this.listeners = {};
-
+  
   var rec = this;
   // Shims for listeners.
   this.listeners.writeJsonClicks    = function(e) { rec.writeJsonClicks(e);    };
@@ -34,10 +34,10 @@ builder.selenium2.Recorder = function(top_window, recordStep, getLastRecordedSte
   this.listeners.writeJsonMouseover = function(e) { rec.writeJsonMouseover(e); };
   this.listeners.bindFrame          = function(frame, level) { rec.bindFrame(frame, level);   };
   this.listeners.unbindFrame        = function(frame, level) { rec.unbindFrame(frame, level); };
-
+  
   // Initialise the recorder by binding to all frames in the recorder window.
   builder.loadlistener.on_all_frames(top_window, this.listeners.bindFrame, 0);
-  // Periodically check if new frames have appeared.
+  // Periodically check if new frames have appeared.  
   this.checkFrames = setInterval(function () {
     builder.loadlistener.on_all_frames(rec.top_window, function (frame, level) {
       if (rec.bound.indexOf(frame) == -1) {
@@ -45,12 +45,41 @@ builder.selenium2.Recorder = function(top_window, recordStep, getLastRecordedSte
       }
     }, 0);
   }, 200);
-
+  
   // Now listen on navigation functions in the browser.
   this.bind_browser(window.bridge.getBrowser());
 };
 
 builder.selenium2.Recorder.prototype = {
+    /** 
+   * Write step to switch to the current active frame if it's changed
+   */
+  writeJsonSwitchFrameIfNeeded: function(element) {
+    this.element_window = element.ownerDocument.defaultView;
+    if (this.current_window !== this.element_window) {
+        //'windows tree' path from root-1 level to element_window
+        var frames = [];
+        var tempWindow = this.element_window;
+        while (this.top_window !== tempWindow) {
+            frames.push(tempWindow);
+            tempWindow = tempWindow.parent;
+        }
+        frames.reverse();
+       
+        var frameIndex = frames.indexOf(this.current_window);
+        if (this.current_window && //undefined => already on top_window
+            this.current_window !== this.top_window &&
+            frameIndex === -1)     //-1 => it's not a descendant of current_window
+        { 
+            this.recordStep(new builder.Step(builder.selenium2.stepTypes.switchToDefaultContent));
+        }
+        var startFrameIndex = frameIndex + 1;
+        for (var i = startFrameIndex; i < frames.length; i++) {            
+            this.recordStep(new builder.Step(builder.selenium2.stepTypes.switchToFrame, frames[i].name));
+        }
+        this.current_window = this.element_window;
+    }
+  },
   /**
    * Record mouseovers to ensure that eg CSS hovers work correctly.
    */
@@ -60,18 +89,20 @@ builder.selenium2.Recorder.prototype = {
       this.recordStep(new builder.Step(builder.selenium2.stepTypes.mouseOverElement, locator));
     }
   },
-
+  
   /**
    * Create an event from a received click on any element.
    */
   writeJsonClicks: function(e) {
     var locator = builder.locator.fromElement(e.target, /*applyTextTransforms*/ true);
     var lastStep = this.getLastRecordedStep(); //builder.getScript().getLastStep();
-
+    
+    this.writeJsonSwitchFrameIfNeeded(e.target);
+    
     // Selects are handled via change events, so clicks on them can be ignored.
-    //if ({ 'select': true, 'option': true }[e.target.tagName.toLowerCase()]) { return; }
+    if ({ 'select': true, 'option': true }[e.target.tagName.toLowerCase()]) { return; }
 
-    // To keep from generating multiple actions for the same click, we check if the click
+    // To keep from generating multiple actions for the same click, we check if the click 
     // happened in the same place as the last one.
     if (this.lastLocator && locator.probablyHasSameTarget(this.lastLocator)) {
       if (e.type == 'click') {
@@ -89,18 +120,18 @@ builder.selenium2.Recorder.prototype = {
       }
     }
     this.lastLocator = locator;
-    // But if the same click happens after more than a second, count it as intentional.
+    // But if the same click happens after more than a second, count it as intentional. 
     clearTimeout(this.lastLocTimeout);
     var rec = this;
     this.lastLocTimeout = setTimeout(function () {
       rec.lastLocator = null;
     }, 1000);
-
+    
     // Selects are handled via change events, so clicks on them can be ignored.
-//    if ({ 'select': true, 'option': true }[e.target.tagName.toLowerCase()]) {
-//      return;
-//    }
-
+    if ({ 'select': true, 'option': true }[e.target.tagName.toLowerCase()]) {
+      return;
+    }
+    
     if (e.type == 'dblclick') {
       this.recordStep(new builder.Step(builder.selenium2.stepTypes.doubleClickElement, locator));
     } else if (e.target.type == "checkbox") {
@@ -175,18 +206,18 @@ builder.selenium2.Recorder.prototype = {
       }, 100);
       return;
     }
-
+    
     var locator = builder.locator.fromElement(e.target, /*applyTextTransforms*/ true);
     var lastStep = this.getLastRecordedStep(); //builder.getScript().getLastStep();
-
+        
     // Under some circumstances, for example when the user presses an arrow key, an event can
-    // be triggered in Firefox with no e.target.type. Ignore these.
+    // be triggered in Firefox with no e.target.type. Ignore these. 
     if (!e.target.type) {
       return;
     }
-
+    
     // Typing
-    if ({ textarea: 1, text: 1, password: 1, date: 1, datetime: 1, 'datetime-local': 1, email: 1, month: 1, number: 1, range: 1, search: 1, tel: 1, time: 1, url: 1, week: 1 }[e.target.type.toLowerCase()]) {
+    if ({ textarea: 1, text: 1, password: 1, date: 1, datetime: 1, 'datetime-local': 1, email: 1, month: 1, number: 1, range: 1, search: 1, tel: 1, time: 1, url: 1, week: 1 }[e.target.type.toLowerCase()]) {      
       // Continue typing or replace a click with a type.
       if (lastStep && this.isTypeOrClickInSamePlace(lastStep, locator)) {
         lastStep.changeType(builder.selenium2.stepTypes.setElementText);
@@ -203,38 +234,28 @@ builder.selenium2.Recorder.prototype = {
         builder.stepdisplay.update();
         return;
       }
-
+    
       // If this is an enter and we've already recorded the submit for it, ignore.
       if (e.keyCode == 13 && this.lastLocator != null && lastStep && lastStep.type == builder.selenium2.stepTypes.clickElement) {
         return;
       }
-
+    
       // Start typing
       this.recordStep(new builder.Step(builder.selenium2.stepTypes.sendKeysToElement, locator, "\\" + e.keyCode));
       return;
     }
-
+    
     // Selecting
     if (e.target.type.toLowerCase() == 'select' || e.target.type.toLowerCase() == 'select-one') {
-
-      if(locator.preferredMethod == builder.locator.methods.openerp70){
-        var vals = {}
-        var model = e.target.attributes['data-bt-testing-model_name'].value;
-        var name = e.target.attributes['data-bt-testing-name'].value;
-        var value = e.target.selectedOptions[0].attributes['data-bt-testing-value'].value;
-        vals[builder.locator.methods.openerp70] = ["Select-Option\t" + model + "\t" + name + "\t" + value];
-        var optLoc = new builder.locator.Locator(builder.locator.methods.openerp70, 0, vals);
-      } else {
-        var vals = {};
-        vals[builder.locator.methods.xpath] = [locator.getValueForMethod(builder.locator.methods.xpath) + "//option[" + (e.target.selectedIndex + 1) + "]"];
-        var optLoc = new builder.locator.Locator(builder.locator.methods.xpath, 0, vals);
-      }
-
+      var vals = {};
+      vals[builder.locator.methods.xpath] = [locator.getValueForMethod(builder.locator.methods.xpath) + "//option[" + (e.target.selectedIndex + 1) + "]"];
+      var optLoc = new builder.locator.Locator(builder.locator.methods.xpath, 0, vals);
+      
       // Add select
       this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementSelected, optLoc));
       return;
     }
-
+    
     if (e.target.type.toLowerCase() == 'select-multiple') {
       var currentVal = jQuery(e.target).val();
       var oldVal = e.target.__sb_oldVal || [];
@@ -249,7 +270,7 @@ builder.selenium2.Recorder.prototype = {
           var vals = {};
           vals[builder.locator.methods.xpath] = [locator.getValueForMethod(builder.locator.methods.xpath) + "/option[@value='" + currentVal[c] + "']"];
           var optLoc = new builder.locator.Locator(builder.locator.methods.xpath, 0, vals);
-
+          
           this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementSelected, optLoc));
         }
       }
@@ -264,14 +285,14 @@ builder.selenium2.Recorder.prototype = {
           var vals = {};
           vals[builder.locator.methods.xpath] = [locator.getValueForMethod(builder.locator.methods.xpath) + "/option[@value='" + oldVal[o] + "']"];
           var optLoc = new builder.locator.Locator(builder.locator.methods.xpath, 0, vals);
-
+          
           this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementNotSelected, optLoc));
         }
       }
       e.target.__sb_oldVal = currentVal;
       builder.stepdisplay.update();
     }
-
+    
     // Radio button
     if (e.target.type == 'radio') {
       // Replace a click with a radio button check
@@ -325,8 +346,8 @@ builder.selenium2.Recorder.prototype = {
     var lastStep = this.getLastRecordedStep(); //builder.getScript().getLastStep();
     var offset = jQuery(e.target).offset();
     var coordString = (e.clientX - offset.left) + "," + (e.clientY - offset.top);
-
-    // To keep from generating multiple actions for the same click, update the previous click
+    
+    // To keep from generating multiple actions for the same click, update the previous click 
     // step as necessary.
     if (this.lastLocator && locator.probablyHasSameTarget(this.lastLocator)) {
       if (e.type == 'click') {
@@ -344,13 +365,13 @@ builder.selenium2.Recorder.prototype = {
       }
     }
     this.lastLocator = locator;
-    // But if the same click happens after more than a second, count it as intentional.
+    // But if the same click happens after more than a second, count it as intentional. 
     clearTimeout(this.lastLocTimeout);
     var rec = this;
     this.lastLocTimeout = setTimeout(function () {
       rec.lastLocator = null;
     }, 1000);
-
+    
     this.recordStep(new builder.Step(builder.selenium2.clickAt, locator, coordString));
   },
   writeJsonKeyPress: function(e) {
@@ -381,9 +402,9 @@ builder.selenium2.Recorder.prototype = {
     }
   },
   /**
-   * Given a function and a recording function, returns a new function that first executes the
+   * Given a function and a recording function, returns a new function that first executes the 
    * original function and then calls the recording function, passing in the Observer function,
-   * the arguments and the return value. The original wrapped function is put into the
+   * the arguments and the return value. The original wrapped function is put into the 
    * __original__ field of the returned function. In short, it interposes the record function as
    * a logger.
    * @param original The function to wrap.
@@ -394,7 +415,7 @@ builder.selenium2.Recorder.prototype = {
       return original;
     }
 
-    // If the original function is already wrapped, unwrap it before adding the new wrapping.
+    // If the original function is already wrapped, unwrap it before adding the new wrapping. 
     if (typeof original.__original__ == 'function') {
       original = original.__original__;
     }
@@ -404,7 +425,7 @@ builder.selenium2.Recorder.prototype = {
       observer(this, arguments, ret);
       return ret;
     }
-
+    
     replacement.__original__ = original;
     return replacement;
   },
@@ -412,7 +433,7 @@ builder.selenium2.Recorder.prototype = {
    * Attach an observer function to the given field of the given object.
    * @param object The object to one of whose fields we want to attach an observer
    * @param fieldName The name of the field
-   * @param The observer function
+   * @param The observer function 
    */
   observe: function(object, fieldName, observer) {
     if (object && object[fieldName]) {
@@ -432,12 +453,12 @@ builder.selenium2.Recorder.prototype = {
       }
     }
   },
-  // FIXME: if possible this should be hooked in at a chrome level to avoid
+  // FIXME: if possible this should be hooked in at a chrome level to avoid 
   // splattering messily if a web-app overrides the alert function.
   // event DOMWillOpenModalDialog doesn't seem to give enough information.
   /**
    * Attach observers to the alert, prompt, and confirm dialog functions to record the fact that
-   * the test runner will have to wait for and then deal with the dialog.
+   * the test runner will have to wait for and then deal with the dialog. 
    */
   overrideDialogs: function(frame) {
     // qqDPS No Selenium 2 alert support yet.
@@ -486,7 +507,13 @@ builder.selenium2.Recorder.prototype = {
   bindFrame: function(frame, level) {
     // Remember that this frame has been bound to.
     this.bound.push(frame);
-
+    
+    var bound = this.bound;
+    jQuery(frame).one('unload', function() {
+        var index = bound.indexOf(this);
+        bound.splice(index, 1);
+    });
+    
     // Turns out there are cases where people are canceling click on purpose, so I am manually
     // going to attach click listeners to all links.
     var links = frame.document.getElementsByTagName('a');
@@ -502,9 +529,9 @@ builder.selenium2.Recorder.prototype = {
     jQuery('canvas', frame.document).
         bind('click', {}, this.listeners.writeJsonClickAt, true).
         bind('keypress', {}, this.listeners.writeJsonType, true);
-
+    
     frame.document.addEventListener("dblclick", this.listeners.writeJsonClicks, true);
-    frame.document.addEventListener("change", this.listeners.writeJsonChange, true);
+    frame.document.addEventListener("change", this.listeners.writeJsonChange, true);    
     frame.document.addEventListener("keyup", this.listeners.writeJsonChange, true);
     frame.document.addEventListener("mouseover", this.listeners.writeJsonMouseover, true);
 
@@ -527,7 +554,7 @@ builder.selenium2.Recorder.prototype = {
    */
   unbindFrame: function(frame, level) {
     if (!frame.document) { return; }
-
+    
     var links = frame.document.getElementsByTagName('a');
     for (var i = 0; i < links.length; i++) {
       jQuery(links[i]).unbind("click", this.listeners.writeJsonClicks, true);
@@ -537,16 +564,16 @@ builder.selenium2.Recorder.prototype = {
     }
 
     this.underrideDialogs(frame);
-
+    
     jQuery('canvas', frame.document).
         unbind('click', this.listeners.writeJsonClickAt, true).
         unbind('keypress', this.listeners.writeJsonType, true);
-
+      
     frame.document.removeEventListener("dblclick", this.listeners.writeJsonClicks, true);
-    frame.document.removeEventListener("change", this.listeners.writeJsonChange, true);
+    frame.document.removeEventListener("change", this.listeners.writeJsonChange, true);    
     frame.document.removeEventListener("keyup", this.listeners.writeJsonChange, true);
     frame.document.removeEventListener("mouseover", this.listeners.writeJsonMouseover, true);
-
+    
     if (frame.document.designMode && frame.document.designMode.toLowerCase() == 'on') {
       jQuery(frame.document).
           unbind("keypress", this.listeners.writeJsonType, true).

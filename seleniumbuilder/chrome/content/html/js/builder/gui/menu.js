@@ -50,6 +50,17 @@ builder.gui.menu.addItemToSection = function(menu, section, title, id, f) {
   jQuery('#' + menu + '-menu-' + section).append(newNode('li', {'id': id + '-li'}, newNode('a', {'click': f, 'id': id}, title)));
 };
 
+builder.gui.menu.addMoveableItemToSection = function(menu, section, title, id, f, upCallback, downCallback) {
+  jQuery('#' + menu + '-menu-' + section).append(
+    newNode('li', {'id': id + '-li'},
+        newNode('span', {'class': 'menu-reorder'}, 
+          upCallback ? newNode('span', {'class': 'menu-up', 'click': upCallback}) : "",
+          downCallback? newNode('span', {'class': 'menu-down', 'click': downCallback}) : ""
+        ),
+        newNode('a', {'click': f, 'id': id}, title)
+   ));
+};
+
 builder.gui.menu.highlightItem = function(id) {
   jQuery('#' + id).addClass('highlightedMenuItem');
 };

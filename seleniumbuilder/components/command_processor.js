@@ -6141,6 +6141,14 @@ FirefoxDriver.prototype.close = function(a) {
     a.send()
   }
 };
+function cloneInto(original, target) {
+  if (bot.userAgent.isProductVersion(33)) {
+    return Components.utils.cloneInto(original, target, {
+      wrapReflectors:true
+    });
+  }
+  return original;
+}
 function injectAndExecuteScript(a, b, c, d) {
   var e = a.session.getDocument(), f = b.script, g = Utils.unwrapParameters(b.args, e);
   var unwrappedDoc = fxdriver.moz.unwrap(e);
@@ -6154,6 +6162,7 @@ function injectAndExecuteScript(a, b, c, d) {
     j.window = h;
     j.document = e.wrappedJSObject ? e.wrappedJSObject : e;
     j.navigator = h.navigator;
+    j.__webdriverParams = cloneInto(converted, sandbox);
     j.__webdriverParams = g;
     try {
       var l = Components.utils.evalInSandbox("with(window) { var __webdriverFunc = function(){" + b.script + "};  __webdriverFunc.apply(null, __webdriverParams); }", j);

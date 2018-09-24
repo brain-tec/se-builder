@@ -1,27 +1,28 @@
 PROJECT="seleniumbuilder"
-PWD=`pwd`
-BUILD="build"
-JS_VERSION=$(shell cat `find . -name loader.js` | grep 'builder.version = ".*"' | cut -d '"' -f 2 )
-RDF_VERSION=$(shell grep -Go 'em:version\>\(.*\)\<' seleniumbuilder/install.rdf | grep -Go '>\(.*\)<' | sed -e 's/[><]*//g' )
-NAME="${PROJECT}-${JS_VERSION}.xpi"
-XPI="${PWD}/${BUILD}/${NAME}"
-INSTALL_RDF=$(shell find . -name install.rdf)
+BUILD_PATH="build"
+PWD=$(shell pwd)
+LOADER_JS=$(shell find . -name loader.js)
+RDF_PATH=$(shell find . -name *.rdf)
+BUILDER_VERSION=$(shell cat ${LOADER_JS} | grep -m1 'builder\.version' | cut -d '"' -f 2)
+XPI_NAME="${PROJECT}-${BUILDER_VERSION}.xpi"
+XPI_PATH="${PWD}/${BUILD_PATH}/${XPI_NAME}"
+
 .PHONY: xpi clean
 
 help:
-	@echo "Selenium Builder - v${JS_VERSION}\n"
-	
+	@echo "Selenium Builder - v${BUILDER_VERSION}\n"
 	@echo "Available targets:"
 	@echo "xpi: creates the plugin file"
-	@echo "clean: deletes the generated artifacts"
+	@echo "clean: deletes generated build folder"
 
 xpi:
-	@echo "Building latest '${XPI}'..."
-	@mkdir -p ${BUILD}
-	@find . -iname "*.rdf" | xargs grep -l "em:version" | xargs sed -i "" -e 's#<em:version>\([^<][^<]*\)</em:version>#<em:version>${JS_VERSION}</em:version>#'
-	@cd seleniumbuilder; zip -r ../build/${NAME} .
-	@echo "File generated at: build/${NAME}" 
+	@echo "Building latest '${XPI_PATH}':\n"
+	@mkdir -p ${BUILD_PATH}
+	@sed -i.bak "s#\(em:version>\)[^<>]*\(</em:version\)#\1${BUILDER_VERSION}\2#" ${RDF_PATH}
+	@rm -f ${RDF_PATH}.bak
+	@cd ${PROJECT} && zip -r ../${BUILD_PATH}/${XPI_NAME} .
+	@echo "File generated at: ${PWD}/${BUILD_PATH}/${XPI_NAME}"
 
 clean:
-	@echo "Removing '${PWD}/${BUILD}'..."
-	@rm -rf ${BUILD}
+	@rm -rf ${BUILD_PATH}
+	@echo "'${PWD}/${BUILD_PATH}' cleaned"

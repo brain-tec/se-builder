@@ -4,15 +4,45 @@ builder.gui.suite = {};
 builder.gui.suite.addScriptMenuItem = function(name, id, index, isSelected, unsavedChanges) {
   if (unsavedChanges) { name = "♦ " + name; }
   if (isSelected) {
-    builder.gui.menu.addItemToSection('suite', 'scripts', name, 'script-' + id, function() {});
+    builder.gui.menu.addMoveableItemToSection('suite', 'scripts', name, 'script-' + id, function() {},
+        index > 0 ? function() { builder.gui.suite.moveUp(index); } : null,
+        index < builder.suite.scripts.length - 1 ? function() { builder.gui.suite.moveDown(index); } : null
+    );
     builder.gui.menu.highlightItem('script-' + id);
   } else {
-    builder.gui.menu.addItemToSection('suite', 'scripts', name, 'script-' + id, function() {
+    builder.gui.menu.addMoveableItemToSection('suite', 'scripts', name, 'script-' + id, function() {
       builder.record.stopAll();
       builder.suite.switchToScript(index);
       builder.stepdisplay.update();
-    });
+    },
+        index > 0 ? function() { builder.gui.suite.moveUp(index); } : null,
+        index < builder.suite.scripts.length - 1 ? function() { builder.gui.suite.moveDown(index); } : null
+    );
   }
+};
+
+builder.gui.suite.moveUp = function(index) {
+  if (index <= 0 || builder.suite.scripts.length < 2) { return; }
+  
+  var tmp = builder.suite.scripts[index - 1];
+  builder.suite.scripts[index - 1] = builder.suite.scripts[index];
+  builder.suite.scripts[index] = tmp;
+  
+  builder.suite.currentScriptIndex--;
+  builder.suite.suiteSaveRequired = true;
+  builder.gui.suite.update();
+};
+
+builder.gui.suite.moveDown = function(index) {
+  if (index >= builder.suite.scripts.length - 1 || builder.suite.scripts.length < 2) { return; }
+  
+  var tmp = builder.suite.scripts[index + 1];
+  builder.suite.scripts[index + 1] = builder.suite.scripts[index];
+  builder.suite.scripts[index] = tmp;
+  
+  builder.suite.currentScriptIndex++;
+  builder.suite.suiteSaveRequired = true;
+  builder.gui.suite.update();
 };
 
 /** Updates display of the suite menu. */
